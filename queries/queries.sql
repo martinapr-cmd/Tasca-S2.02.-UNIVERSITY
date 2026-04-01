@@ -57,18 +57,18 @@ WHERE persona.tipo = 'alumno' AND curso_escolar.anyo_inicio = 2018 AND curso_esc
 
 -- Resol les 6 següents consultes utilitzant les clàusules LEFT JOIN i RIGHT JOIN.
 -- 10. Retorna un llistat amb els noms de tots els professors/es i els departaments que tenen vinculats. El llistat també ha de mostrar aquells professors/es que no tenen cap departament associat. El llistat ha de retornar quatre columnes, nom del departament, primer cognom, segon cognom i nom del professor/a. El resultat estarà ordenat alfabèticament de menor a major pel nom del departament, cognoms i el nom. (departamento, apellido1, apellido2, nombre)
-SELECT departamento.nombre AS departamento, persona.apellido1, persona.apellido2, persona.nombre
-FROM persona
-JOIN profesor ON persona.id = profesor.id_profesor
-LEFT JOIN departamento ON profesor.id_departamento = departamento.id
-ORDER BY departamento.nombre, persona.apellido1, persona.apellido2, persona.nombre ASC;
+SELECT d.nombre AS departamento, p.apellido1, p.apellido2, p.nombre
+FROM persona p
+LEFT JOIN profesor prf ON p.id = prf.id_profesor
+LEFT JOIN departamento d ON prf.id_departamento = d.id
+WHERE p.tipo = 'profesor'
+ORDER BY d.nombre, p.apellido1, p.apellido2, p.nombre;
 
 -- 11. Retorna un llistat amb els professors/es que no estan associats a un departament. (apellido1, apellido2, nombre)
-SELECT persona.apellido1, persona.apellido2, persona.nombre 
-FROM persona
-JOIN profesor ON persona.id = profesor.id_profesor
-LEFT JOIN departamento ON profesor.id_departamento = departamento.id
-WHERE profesor.id_departamento IS NULL;
+SELECT p.apellido1, p.apellido2, p.nombre
+FROM persona p
+LEFT JOIN profesor prf ON p.id = prf.id_profesor
+WHERE p.tipo = 'profesor' AND prf.id_departamento IS NULL;
 
 -- 12. Retorna un llistat amb els departaments que no tenen professors/es associats. (nombre)
 SELECT departamento.nombre 
